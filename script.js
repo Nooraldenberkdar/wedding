@@ -149,6 +149,17 @@
     });
   }
 
+  function setupScrollHint() {
+    const hint = $("#scrollHint"), bar = $("#progress");
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (max > 0 ? scrollY / max * 100 : 0) + "%";
+      hint.classList.toggle("hide", scrollY > 80);
+    };
+    addEventListener("scroll", onScroll, { passive: true }); onScroll();
+    hint.addEventListener("click", () => $(".countdown").scrollIntoView({ behavior: reduced ? "auto" : "smooth" }));
+  }
+
   function openInvitation() {
     const env = $("#envelope");
     env.classList.add("open");
@@ -162,7 +173,7 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     applyConfig(); countdown(); setInterval(countdown, 1000);
-    setupMusic(); setupRsvp(); setupCalendar(); setupPetals(); setupReveal();
+    setupMusic(); setupRsvp(); setupCalendar(); setupPetals(); setupReveal(); setupScrollHint();
     $("#langBtn").addEventListener("click", () => setLanguage(lang === "ar" ? "en" : "ar"));
     $("#openBtn").addEventListener("click", openInvitation);
   });
